@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router";
 import ProfilePage from "./pages/ProfilePage";
 import AuthPage from "./pages/AuthPage";
 import HomePage from "./pages/HomePage";
+import MealDetailPage from "./pages/MealDetailPage";
 import AboutUsPage from "./pages/AboutUsPage";
 import Layout from "./components/Layout/Layout";
 import {useContext} from 'react';
@@ -14,6 +15,7 @@ function App() {
     <Layout>
       <Routes>
         <Route path="/" exact element={<HomePage />} />
+        <Route path="/:mealId" exact element={<MealDetailPage />} />
         <Route path="/about-us" exact element={<AboutUsPage />} />
         {!loggedIn && <Route path="/auth" element={<AuthPage />} />}
         {loggedIn && <Route path="/profile" element={<ProfilePage />} />}

@@ -1,7 +1,7 @@
 import classes from "./Cart.module.css";
 import Modal from "../UI/Modal";
 import React, { useContext, useState } from "react";
-import CartContext from "../../store/cart-context";
+import {CartContext} from "../../store/cart-context";
 import CartItem from "./CartItem";
 import CheckoutForm from "./CheckoutForm";
 
@@ -57,7 +57,7 @@ function Cart(props) {
   const submitOrderHandler = async (userData) => {
     setIsSubmitting(true);
     await fetch(
-      "https://food-app-guide-default-rtdb.firebaseio.com/orders.json",
+      "https://auth-2-e197c-default-rtdb.firebaseio.com/orders.json",
       {
         method: "POST",
         body: JSON.stringify({ user: userData, orderedItems: cartCtx.items }),

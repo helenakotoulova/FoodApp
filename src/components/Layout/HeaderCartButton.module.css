@@ -4,13 +4,13 @@
     border: none;
     background-color: #4d1601;
     color: white;
-    padding: 0.75rem 3rem;
+    padding: 0.5rem 1rem;
     display: flex;
     justify-content: space-around;
     align-items: center;
     border-radius: 25px;
     font-weight: bold;
-    margin-right: 200px;
+    margin:0 auto;
   }
   
   .button:hover,
@@ -56,5 +56,11 @@
     }
     100% {
       transform: scale(1);
+    }
+  }
+
+  @media screen and (min-width: 800px) {
+    .button {
+      margin:0;
     }
   }

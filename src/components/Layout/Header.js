@@ -1,18 +1,77 @@
-import React from "react";
-import meals4Image from "../../assets/meals4.jpg";
+import React, { useContext } from "react";
+import { NavLink, Link } from "react-router-dom";
 import classes from "./Header.module.css";
 import HeaderCartButton from "./HeaderCartButton";
+import { FaUserPlus, FaUserMinus, FaBars } from "react-icons/fa";
+import { AuthContext } from "../../store/auth-context";
+import {SideBarContext} from "../../store/sidebar-context";
 
 function Header(props) {
+  const authCtx = useContext(AuthContext);
+  const loggedIn = authCtx.loggedIn;
+  const logoutHandler = () => {
+    authCtx.logout();
+    // redirect user
+  };
+  const { openSidebar } = useContext(SideBarContext);
+
   return (
     <React.Fragment>
       <header className={classes.header}>
-        <h1>React Meals</h1>
-        <HeaderCartButton onShowCart={props.onShowCart}/>
+        <nav className={classes.nav}>
+          <Link to="/" className={classes.logo}>
+            <h1>Foodie</h1>
+          </Link>
+          <ul className={classes.list}>
+            <li>
+              <NavLink
+                to="/"
+                className={(navData) =>
+                  navData.isActive ? classes.active : ""
+                }
+              >
+                Shop
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/about-us"
+                className={(navData) =>
+                  navData.isActive ? classes.active : ""
+                }
+              >
+                About Us
+              </NavLink>
+            </li>
+            {loggedIn && (
+              <li>
+                <NavLink
+                  to="/profile"
+                  className={(navData) =>
+                    navData.isActive ? classes.active : ""
+                  }
+                >
+                  Profile
+                </NavLink>
+              </li>
+            )}
+          </ul>
+          <div className={classes.icons}>
+            <HeaderCartButton onShowCart={props.onShowCart} />
+            {!loggedIn && (
+              <Link to="/auth" className={classes.login}>
+                <FaUserPlus />
+              </Link>
+            )}
+            {loggedIn && (
+              <FaUserMinus className={classes.login} onClick={logoutHandler} />
+            )}
+          </div>
+          <div className={classes.buttonSideBar}>
+            <FaBars onClick={openSidebar}/>
+          </div>
+        </nav>
       </header>
-      <div className={classes["main-image"]}>
-        <img src={meals4Image} alt="A table with food" />
-      </div>
     </React.Fragment>
   );
 }

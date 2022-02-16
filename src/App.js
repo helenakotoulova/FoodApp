@@ -1,34 +1,29 @@
-import { useState } from "react";
-import Header from "./components/Layout/Header";
-import Meals from "./components/Meals/Meals";
-import Cart from "./components/Cart/Cart";
-import CartProvider from "./store/CartProvider";
-import ChooseColor from "./components/UI/ChooseColor";
+import { Routes, Route, Navigate } from "react-router";
+import ProfilePage from "./pages/ProfilePage";
+import AuthPage from "./pages/AuthPage";
+import HomePage from "./pages/HomePage";
+import AboutUsPage from "./pages/AboutUsPage";
+import Layout from "./components/Layout/Layout";
+import {useContext} from 'react';
+import {AuthContext} from './store/auth-context';
 
 function App() {
-  const [cartIsShown, setCartIsShown] = useState(false);
-
-  function showCartHandler() {
-    setCartIsShown(true);
-  }
-
-  function hideCartHandler() {
-    setCartIsShown(false);
-  }
-
+  const authCtx=useContext(AuthContext);
+  const loggedIn = authCtx.loggedIn;
   return (
-    <CartProvider>
-      {cartIsShown && <Cart onHideCart={hideCartHandler}/>}
-      <Header onShowCart={showCartHandler} />
-      <main>
-        <Meals />
-      </main>
-    </CartProvider>
+    <Layout>
+      <Routes>
+        <Route path="/" exact element={<HomePage />} />
+        <Route path="/about-us" exact element={<AboutUsPage />} />
+        {!loggedIn && <Route path="/auth" element={<AuthPage />} />}
+        {loggedIn && <Route path="/profile" element={<ProfilePage />} />}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Layout>
   );
 }
 
 export default App;
 
-/*
-Ten useState pro Cart pouzijeme zde, protoze tohle je cast appky, kde ten Cart renderujeme.
-*/
+// <Route path="*" element={<Navigate to="/" />} />
+

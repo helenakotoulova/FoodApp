@@ -17,13 +17,15 @@ const FilterMeals = ({ meals, onAddFilter }) => {
     onAddFilter(filter);
   }, [price, label, max, onAddFilter]);
 
+  const newPos = Number(((price - min) * 100) / (max - min));
+
   return (
     <section className={classes.section}>
       <h3>Filters</h3>
       <div className={classes.sliderActions}>
         <label htmlFor="price">Filter by price:</label>
         <div className={classes.input}>
-          <output className={classes.bubble}>{price}</output>
+          <output className={classes.bubble} style={{ left: `${newPos}%`}}>{price}</output>
           <input
             id="price"
             type="range"

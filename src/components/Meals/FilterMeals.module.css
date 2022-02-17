@@ -12,7 +12,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin: 0.5rem auto;
+  margin: 1rem auto;
 }
 /*
 .sliderActions label,
@@ -111,7 +111,7 @@
   position: absolute;
   border-radius: 0.25rem;
   top:0%;
-  left: 50%;
+  left: 100%;
   transform: translate(-50%,-80%);
   font-size: small;
 }

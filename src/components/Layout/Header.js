@@ -2,9 +2,10 @@ import React, { useContext } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import classes from "./Header.module.css";
 import HeaderCartButton from "./HeaderCartButton";
-import { FaUserPlus, FaUserMinus, FaBars,FaUser } from "react-icons/fa";
+import { FaUserPlus, FaUserMinus, FaBars, FaUser } from "react-icons/fa";
 import { AuthContext } from "../../store/auth-context";
-import {SideBarContext} from "../../store/sidebar-context";
+import { SideBarContext } from "../../store/sidebar-context";
+import { useTransition, animated } from "react-spring";
 
 function Header(props) {
   const navigate = useNavigate();
@@ -15,6 +16,11 @@ function Header(props) {
     navigate("/");
   };
   const { openSidebar } = useContext(SideBarContext);
+  const transition = useTransition(loggedIn, {
+    from: { transform: "scale(0)", opacity: 0 },
+    enter: { transform: "scale(1)", opacity: 1 },
+    leave: { transform: "scale(0)", opacity: 0 },
+  });
 
   return (
     <React.Fragment>
@@ -44,25 +50,36 @@ function Header(props) {
                 About Us
               </NavLink>
             </li>
-            {loggedIn && (
-              <li>
-                <NavLink
-                  to="/profile"
-                  className={(navData) =>
-                    navData.isActive ? classes.active : ""
-                  }
-                >
-                  Profile<FaUser />
-                </NavLink>
-              </li>
+            {transition((style, item) =>
+              item ? (
+                <animated.li style={style}>
+                  <NavLink
+                    to="/profile"
+                    className={(navData) =>
+                      navData.isActive ? classes.active : ""
+                    }
+                  >
+                    Profile
+                    <FaUser />
+                  </NavLink>
+                </animated.li>
+              ) : (
+                ""
+              )
             )}
           </ul>
           <div className={classes.icons}>
             <HeaderCartButton onShowCart={props.onShowCart} />
-            {loggedIn && (
-              <Link to="/profile" className={classes.profile}>
-                <FaUser />
-              </Link>
+            {transition((style, item) =>
+              item ? (
+                <animated.li style={style}>
+                  <Link to="/profile" className={classes.profile}>
+                    <FaUser />
+                  </Link>
+                </animated.li>
+              ) : (
+                ""
+              )
             )}
             {!loggedIn && (
               <Link to="/auth" className={classes.login}>
@@ -74,7 +91,7 @@ function Header(props) {
             )}
           </div>
           <div className={classes.buttonSideBar}>
-            <FaBars onClick={openSidebar}/>
+            <FaBars onClick={openSidebar} />
           </div>
         </nav>
       </header>
@@ -82,4 +99,3 @@ function Header(props) {
   );
 }
 export default Header;
-

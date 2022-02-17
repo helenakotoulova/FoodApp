@@ -6,7 +6,8 @@ function isEmpty(value) {
 }
 
 function isFiveNumbers(value) {
-  return value.trim().length === 5;
+  const editedValue = value.replace(/\W/g,'');
+  return editedValue.length === 5;
 }
 
 function CheckoutForm(props) {

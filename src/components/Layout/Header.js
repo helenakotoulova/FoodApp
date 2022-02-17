@@ -1,17 +1,18 @@
 import React, { useContext } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import classes from "./Header.module.css";
 import HeaderCartButton from "./HeaderCartButton";
-import { FaUserPlus, FaUserMinus, FaBars } from "react-icons/fa";
+import { FaUserPlus, FaUserMinus, FaBars,FaUser } from "react-icons/fa";
 import { AuthContext } from "../../store/auth-context";
 import {SideBarContext} from "../../store/sidebar-context";
 
 function Header(props) {
+  const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
   const loggedIn = authCtx.loggedIn;
   const logoutHandler = () => {
     authCtx.logout();
-    // redirect user
+    navigate("/");
   };
   const { openSidebar } = useContext(SideBarContext);
 
@@ -51,13 +52,18 @@ function Header(props) {
                     navData.isActive ? classes.active : ""
                   }
                 >
-                  Profile
+                  Profile<FaUser />
                 </NavLink>
               </li>
             )}
           </ul>
           <div className={classes.icons}>
             <HeaderCartButton onShowCart={props.onShowCart} />
+            {loggedIn && (
+              <Link to="/profile" className={classes.profile}>
+                <FaUser />
+              </Link>
+            )}
             {!loggedIn && (
               <Link to="/auth" className={classes.login}>
                 <FaUserPlus />
@@ -77,8 +83,3 @@ function Header(props) {
 }
 export default Header;
 
-/*
-Tak jak mam nadefinovany ten zdroj (src) obrazku je LOCAL
-pokdu bych mela url, tak takhle: // src='https://...'
-To alt je pro nevidome. Precte to ten text
-*/

@@ -1,19 +1,25 @@
 import classes from "./AvailableMeals.module.css";
 import Card from "../UI/Card";
 import MealItem from "./MealItem/MealItem";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { FIREBASE_DOMAIN } from "../../lib/url";
+import FilterMeals from "./FilterMeals";
 
 function AvailableMeals() {
   const [meals, setMeals] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [httpError, setHttpError] = useState(null);
+  const [filteredMeals, setFilteredMeals] = useState(meals);
+  const [filter, setFilter] = useState({});
+
+  const filterHandler = useCallback((filter) => {
+    setFilter(filter);
+  },[]);
 
   useEffect(() => {
     const fetchMeals = async () => {
       setIsLoading(true);
-      const response = await fetch(
-        "https://auth-2-e197c-default-rtdb.firebaseio.com/meals.json"
-      );
+      const response = await fetch(`${FIREBASE_DOMAIN}/meals.json`);
 
       if (!response.ok) {
         throw new Error("Something went wrong!");
@@ -24,9 +30,7 @@ function AvailableMeals() {
       for (const key in data) {
         const loadedMeal = {
           id: key,
-          name: data[key].name,
-          description: data[key].description,
-          price: data[key].price,
+          ...data[key],
         };
         loadedMeals.push(loadedMeal);
       }
@@ -39,6 +43,16 @@ function AvailableMeals() {
       setHttpError(error.message);
     });
   }, []); // tento useEffect bude runovat jen pri loadovani stranky.
+
+  useEffect(() => {
+    setFilteredMeals(
+      meals.filter(
+        (meal) =>
+          (meal.category === filter.category || filter.category === "all") &&
+          +meal.price <= filter.price
+      )
+    );
+  }, [filter, meals]);
 
   if (isLoading) {
     return (
@@ -56,9 +70,10 @@ function AvailableMeals() {
     );
   }
 
+
   const mealList = (
     <ul>
-      {meals.map((meal) => (
+      {filteredMeals.map((meal) => (
         <MealItem
           key={meal.id}
           id={meal.id}
@@ -70,71 +85,14 @@ function AvailableMeals() {
     </ul>
   );
 
+
+
   return (
     <section className={classes.meals}>
+      <FilterMeals meals={meals} onAddFilter={filterHandler} />
       <Card>{mealList}</Card>
     </section>
   );
 }
 
 export default AvailableMeals;
-
-/*
-POZN:
-Nemuzu zapsat useEffect(async() => {
-  await fetch()
-})
-*/
-
-/*
-PUVODNI VERZE TRY/CATCH:
-try {
-      fetchMeals();
-    } catch (error) {
-      setIsLoading(false);
-      setHttpError(error.message);
-    }
-*/
-
-/*
-Pozor! Mela jsem to takhle:
-<ul>
-            {DUMMY_MEALS.map((meal)=> {
-                <li key={meal.id}>
-                    <h3>{meal.name}</h3>
-                    <p>{meal.description}</p>
-                    <p>{meal.price}</p>
-                </li>
-            })}
-        </ul>
-
-Byly tam navic ty slozene zavorky za tou sipkou. 
-Psalo to, ze Array.prototype.map() expects a return value from arrow function 
-*/
-/* 
-const DUMMY_MEALS = [
-  {
-    id: 'm1',
-    name: 'Sushi',
-    description: 'Finest fish and veggies',
-    price: 22.99,
-  },
-  {
-    id: 'm2',
-    name: 'Schnitzel',
-    description: 'A german specialty!',
-    price: 16.5,
-  },
-  {
-    id: 'm3',
-    name: 'Barbecue Burger',
-    description: 'American, raw, meaty',
-    price: 12.99,
-  },
-  {
-    id: 'm4',
-    name: 'Green Bowl',
-    description: 'Healthy...and green...',
-    price: 18.99,
-  },
-];*/

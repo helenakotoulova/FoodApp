@@ -1,6 +1,7 @@
+import MealDetail from "../components/Meals/MealDetail";
+
 const MealDetailPage = () => {
-    return <>
-    <h1>Detail</h1></>;
-  };
-  
-  export default MealDetailPage;
+  return <MealDetail />;
+};
+
+export default MealDetailPage;

@@ -1,7 +1,7 @@
 import classes from "./Cart.module.css";
 import Modal from "../UI/Modal";
 import React, { useContext, useState } from "react";
-import {CartContext} from "../../store/cart-context";
+import { CartContext } from "../../store/cart-context";
 import CartItem from "./CartItem";
 import CheckoutForm from "./CheckoutForm";
 
@@ -47,9 +47,17 @@ function Cart(props) {
         Close
       </button>
       {hasItems && (
-        <button className={classes.button} onClick={orderHandler}>
-          Order
-        </button>
+        <>
+          <button
+            className={classes["button--alt"]}
+            onClick={cartCtx.clearCart}
+          >
+            Clear whole cart
+          </button>
+          <button className={classes.button} onClick={orderHandler}>
+            Order
+          </button>
+        </>
       )}
     </div>
   );
@@ -91,9 +99,9 @@ function Cart(props) {
     <React.Fragment>
       <p>Successfully sent the order!</p>
       <div className={classes.actions}>
-      <button className={classes.button} onClick={props.onHideCart}>
-        Close
-      </button>
+        <button className={classes.button} onClick={props.onHideCart}>
+          Close
+        </button>
       </div>
     </React.Fragment>
   );

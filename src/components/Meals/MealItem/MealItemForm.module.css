@@ -10,7 +10,10 @@
     color: white;
     padding: 0.25rem 2rem;
     border-radius: 20px;
-    font-weight: bold;
+    font-weight: 500;
+    display:inline-block;
+    margin-top: 0.5rem;
+    letter-spacing: 0.05rem;
   }
   
   .form button:hover,
@@ -18,3 +21,4 @@
     background-color: #641e03;
     border-color: #641e03;
   }
+

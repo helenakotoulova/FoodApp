@@ -1,7 +1,8 @@
 import { useContext, useRef, useState } from "react";
 import classes from "./AuthForm.module.css";
 import { AuthContext } from "../../store/auth-context";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
+import { WEB_API_KEY} from '../../lib/url';
 
 function isEmpty(value) {
   return value.trim() === "";
@@ -9,7 +10,6 @@ function isEmpty(value) {
 
 const AuthForm = () => {
   const [signIn, setSignIn] = useState(true);
-  //const [btnIsHighlighted, setBtnIsHighlighted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const emailInputRef = useRef();
@@ -19,7 +19,6 @@ const AuthForm = () => {
     email: true,
     password: true,
   });
-
 
   const navigate = useNavigate();
 
@@ -40,7 +39,7 @@ const AuthForm = () => {
 
     setFormInputsValidity({
       email: enteredEmailIsValid,
-      street: enteredPasswordIsValid,
+      password: enteredPasswordIsValid,
     });
 
     const formIsValid = enteredEmailIsValid && enteredPasswordIsValid;
@@ -52,11 +51,13 @@ const AuthForm = () => {
     let url;
     if (signIn) {
       url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDxmvyBuHe4828tG3rAPYRC29gkB4zwDeg";
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${WEB_API_KEY}`;
     } else {
       url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDxmvyBuHe4828tG3rAPYRC29gkB4zwDeg";
+        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${WEB_API_KEY}`;
     }
+
+
     fetch(url, {
       method: "POST",
       body: JSON.stringify({
@@ -92,16 +93,6 @@ const AuthForm = () => {
       });
   };
 
-  /*
-  const btnHighlihtHandler = () => {
-    setBtnIsHighlighted(true);
-    setTimeout(() => {
-      setBtnIsHighlighted(false);
-    }, 300);
-  };
-  const btnClasses = `${btnIsHighlighted ? classes.bump : ""}`;
-*/
-
   const emailControlClasses = `${classes.control} ${
     formInputsValidity.email ? "" : classes.invalid
   }`;
@@ -109,9 +100,14 @@ const AuthForm = () => {
     formInputsValidity.password ? "" : classes.invalid
   }`;
 
+  let editedErrorMessage;
+  if (error) {
+    editedErrorMessage = error.replace(/_/g, ' ').toLowerCase();
+  }
+ 
   return (
     <section className={classes.section}>
-      {error && <div className={classes.alert}>{error}</div>}
+      {error && <div className={classes.error}>{editedErrorMessage}!</div>}
       <form className={classes.form} onSubmit={submitHandler}>
         <div className={classes.actions}>
           <button
@@ -155,8 +151,6 @@ const AuthForm = () => {
           {isLoading && <p>Sending request...</p>}
           {!isLoading && (
             <button
-              /*className={btnClasses}
-              onMouseOver={btnHighlihtHandler}*/
               type="submit"
             >
               {signIn ? "Login" : "Create new account"}

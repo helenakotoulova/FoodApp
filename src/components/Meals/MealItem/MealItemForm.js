@@ -24,9 +24,9 @@ function MealItemForm(props) {
   }
 
   return (
-    <form className={classes.form} onSubmit={submitHandler}>
+    <form className={`${classes.form} ${props.className? props.className: ''}`} onSubmit={submitHandler}>
       <Input
-        label="Amount"
+        label="Amount:"
         ref={amountInputRef}
         input={{
           id: "amount_" + props.id,
@@ -44,16 +44,3 @@ function MealItemForm(props) {
 }
 export default MealItemForm;
 
-/*
-Ten nas Input je nas custom component a nezna tedy atribut ref.
-proto v Input.js pridame do inputu ref={ref} (tzn tady to pak pouzivame jako ref={..}) a
-navic musime v Input.js pridat React.forwardRef((props,ref) => {
-  return...
-        <input ref={ref}
-});
-Takhle bude ref fungovat i na nasi custom komponente - pomoci forwardRef.
-
-DALSI DULEZITE POZN: TEN CURRENT.VALUE VZDYCKY OUTPUTUJE STRING! I KDYZ MAME TREBA TYPE='NUMBER'.
-Proto pridame tento radek: const enteredAmountNumber= +enteredAmount; Takhle prevedu string na number, pokud uz je string ve formatu cisla.
-
-*/

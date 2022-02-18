@@ -44,3 +44,15 @@
     background-color: #8a2b06;
     color: white;
   }
+
+.order {
+  margin-top: 1rem;
+}
+/*
+  @media screen and (min-width: 880px) {
+    .actions {
+      display:flex;
+    }
+  }
+
+  */

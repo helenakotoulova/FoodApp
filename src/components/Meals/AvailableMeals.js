@@ -5,16 +5,23 @@ import { useEffect, useState, useCallback } from "react";
 import { FIREBASE_DOMAIN } from "../../lib/url";
 import FilterMeals from "./FilterMeals";
 
+let initial = true;
+
 function AvailableMeals() {
   const [meals, setMeals] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [httpError, setHttpError] = useState(null);
   const [filteredMeals, setFilteredMeals] = useState(meals);
   const [filter, setFilter] = useState({});
+  const [reset, setReset] = useState(false);
 
   const filterHandler = useCallback((filter) => {
     setFilter(filter);
-  },[]);
+  }, []);
+
+  const resetHandler = () => {
+    setReset(true);
+  };
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -45,6 +52,10 @@ function AvailableMeals() {
   }, []); // tento useEffect bude runovat jen pri loadovani stranky.
 
   useEffect(() => {
+    if (meals.length !== 0 && initial) {
+      initial = false;
+      setFilteredMeals(meals);
+    }
     setFilteredMeals(
       meals.filter(
         (meal) =>
@@ -70,7 +81,6 @@ function AvailableMeals() {
     );
   }
 
-
   const mealList = (
     <ul>
       {filteredMeals.map((meal) => (
@@ -85,11 +95,31 @@ function AvailableMeals() {
     </ul>
   );
 
-
+  if (filteredMeals.length === 0 && !initial) {
+    return (
+      <section className={classes.meals}>
+        <FilterMeals
+          meals={meals}
+          filteredMeals={filteredMeals}
+          onAddFilter={filterHandler}
+          reset={reset}
+        />
+        <p className={classes.noMeal}>Nothing to display!</p>
+        <button onClick={resetHandler} className={classes.button}>
+          Reset Filters
+        </button>
+      </section>
+    );
+  }
 
   return (
     <section className={classes.meals}>
-      <FilterMeals meals={meals} onAddFilter={filterHandler} />
+      <FilterMeals
+        meals={meals}
+        filteredMeals={filteredMeals}
+        onAddFilter={filterHandler}
+        reset={reset}
+      />
       <Card>{mealList}</Card>
     </section>
   );

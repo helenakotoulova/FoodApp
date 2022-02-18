@@ -59,7 +59,7 @@
     }
   }
 
-  @media screen and (min-width: 800px) {
+  @media screen and (min-width: 880px) {
     .button {
       margin:0;
     }

@@ -93,8 +93,9 @@
 }
 
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 880px) {
   .summary {
+    max-width:75%;
     margin-top: 8rem;
     grid-template-columns: 1fr 1fr;
   }

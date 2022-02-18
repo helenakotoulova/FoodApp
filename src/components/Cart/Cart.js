@@ -4,6 +4,7 @@ import React, { useContext, useState } from "react";
 import { CartContext } from "../../store/cart-context";
 import CartItem from "./CartItem";
 import CheckoutForm from "./CheckoutForm";
+import { FIREBASE_DOMAIN } from "../../lib/url";
 
 function Cart(props) {
   const cartCtx = useContext(CartContext);
@@ -46,31 +47,25 @@ function Cart(props) {
       <button className={classes["button--alt"]} onClick={props.onHideCart}>
         Close
       </button>
-      {hasItems && (
-        <>
-          <button
-            className={classes["button--alt"]}
-            onClick={cartCtx.clearCart}
-          >
-            Clear whole cart
-          </button>
+      <button className={classes["button--alt"]} onClick={cartCtx.clearCart}>
+        Clear whole cart
+      </button>
+      <div className={classes.order}>
+        {hasItems && (
           <button className={classes.button} onClick={orderHandler}>
             Order
           </button>
-        </>
-      )}
+        )}
+      </div>
     </div>
   );
 
   const submitOrderHandler = async (userData) => {
     setIsSubmitting(true);
-    await fetch(
-      "https://auth-2-e197c-default-rtdb.firebaseio.com/orders.json",
-      {
-        method: "POST",
-        body: JSON.stringify({ user: userData, orderedItems: cartCtx.items }),
-      }
-    );
+    await fetch(`${FIREBASE_DOMAIN}/orders.json`, {
+      method: "POST",
+      body: JSON.stringify({ user: userData, orderedItems: cartCtx.items }),
+    });
     setIsSubmitting(false);
     setDidSubmit(true);
     cartCtx.clearCart();

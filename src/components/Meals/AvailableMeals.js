@@ -68,11 +68,9 @@ function AvailableMeals() {
 
   if (isLoading) {
     return <LoadingSpinner />;
-    {
-      /*<section className={classes.mealsLoading}>
+    /*<section className={classes.mealsLoading}>
         <p>Loading...</p>
     </section>*/
-    }
   }
 
   if (httpError) {

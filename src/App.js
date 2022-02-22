@@ -1,27 +1,36 @@
 import { Routes, Route, Navigate } from "react-router";
-import ProfilePage from "./pages/ProfilePage";
-import AuthPage from "./pages/AuthPage";
-import HomePage from "./pages/HomePage";
-import MealDetailPage from "./pages/MealDetailPage";
-import AboutUsPage from "./pages/AboutUsPage";
+//import ProfilePage from "./pages/ProfilePage";
+//import AuthPage from "./pages/AuthPage";
+//import HomePage from "./pages/HomePage";
+//import MealDetailPage from "./pages/MealDetailPage";
+//import AboutUsPage from "./pages/AboutUsPage";
 import Layout from "./components/Layout/Layout";
-import {useContext} from 'react';
-import {AuthContext} from './store/auth-context';
+import React, { useContext, Suspense } from "react";
+import { AuthContext } from "./store/auth-context";
+import LoadingSpinner from "./components/UI/LoadingSpinner";
+
+const HomePage = React.lazy(() => import("./pages/HomePage"));
+const AboutUsPage = React.lazy(() => import("./pages/AboutUsPage"));
+const AuthPage = React.lazy(() => import("./pages/AuthPage"));
+const MealDetailPage = React.lazy(() => import("./pages/MealDetailPage"));
+const ProfilePage = React.lazy(() => import("./pages/ProfilePage"));
 
 function App() {
-  const authCtx=useContext(AuthContext);
+  const authCtx = useContext(AuthContext);
   const loggedIn = authCtx.loggedIn;
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" exact element={<HomePage />} />
-        <Route path="/about-us" element={<AboutUsPage />} />
-        <Route path="/meals/:mealId" element={<MealDetailPage />} />
-        {!loggedIn && <Route path="/auth" element={<AuthPage />} />}
-        {loggedIn && <Route path="/profile" element={<ProfilePage />} />}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </Layout>
+    <Suspense fallback={<LoadingSpinner />}>
+      <Layout>
+        <Routes>
+          <Route path="/" exact element={<HomePage />} />
+          <Route path="/about-us" element={<AboutUsPage />} />
+          <Route path="/meals/:mealId" element={<MealDetailPage />} />
+          {!loggedIn && <Route path="/auth" element={<AuthPage />} />}
+          {loggedIn && <Route path="/profile" element={<ProfilePage />} />}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Layout>
+    </Suspense>
   );
 }
 

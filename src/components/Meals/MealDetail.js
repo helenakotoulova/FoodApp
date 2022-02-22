@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import {CartContext} from "../../store/cart-context";
 import MealItemForm from './MealItem/MealItemForm';
+import LoadingSpinner from "../UI/LoadingSpinner";
 
 const MealDetail = () => {
   const params = useParams();
@@ -41,7 +42,7 @@ const MealDetail = () => {
   }, [fetchData]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />
   }
 
   if (error) {

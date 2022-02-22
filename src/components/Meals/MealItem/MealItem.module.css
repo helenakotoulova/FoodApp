@@ -16,6 +16,8 @@
   .meal a {
     text-decoration: none;
     color:black;
+    width:75%;
+    cursor:pointer;
   }
   
   .meal h3 {
@@ -24,6 +26,7 @@
   
   .description {
     font-style: italic;
+    color:black;
   }
   
   .price {
@@ -43,13 +46,13 @@
       transform: scale(1);
     }
     10% {
-      transform: scale(1.1);
+      transform: scale(1.02);
     }
     50% {
-      transform: scale(1.15);
+      transform: scale(1.04);
     }
     75% {
-      transform: scale(1.2);
+      transform: scale(1.02);
     }
     100% {
       transform: scale(1);

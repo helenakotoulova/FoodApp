@@ -4,6 +4,7 @@ import MealItem from "./MealItem/MealItem";
 import { useEffect, useState, useCallback } from "react";
 import { FIREBASE_DOMAIN } from "../../lib/url";
 import FilterMeals from "./FilterMeals";
+import LoadingSpinner from "../UI/LoadingSpinner";
 
 let initial = true;
 
@@ -66,11 +67,12 @@ function AvailableMeals() {
   }, [filter, meals]);
 
   if (isLoading) {
-    return (
-      <section className={classes.mealsLoading}>
+    return <LoadingSpinner />;
+    {
+      /*<section className={classes.mealsLoading}>
         <p>Loading...</p>
-      </section>
-    );
+    </section>*/
+    }
   }
 
   if (httpError) {

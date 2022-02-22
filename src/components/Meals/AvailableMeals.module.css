@@ -5,6 +5,10 @@
   animation: meals-appear 1s ease-out forwards;
 }
 
+.meals a {
+  text-decoration: none;
+}
+
 .meals ul {
   list-style: none;
   margin: 0;

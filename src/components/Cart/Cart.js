@@ -47,9 +47,11 @@ function Cart(props) {
       <button className={classes["button--alt"]} onClick={props.onHideCart}>
         Close
       </button>
-      <button className={classes["button--alt"]} onClick={cartCtx.clearCart}>
-        Clear whole cart
-      </button>
+      {hasItems && (
+        <button className={classes["button--alt"]} onClick={cartCtx.clearCart}>
+          Clear whole cart
+        </button>
+      )}
       <div className={classes.order}>
         {hasItems && (
           <button className={classes.button} onClick={orderHandler}>

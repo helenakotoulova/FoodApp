@@ -28,11 +28,11 @@ function MealItem(props) {
 
   return (
     <li className={classes.meal}>
-      <div>
-        <h3 className={`${classes.title} ${btnClasses}`} onMouseOver={btnHighlihtHandler}><Link to={`/meals/${props.id}`}>{props.name}</Link></h3>
+      <Link to={`/meals/${props.id}`} className={`${btnClasses}`} onMouseOver={btnHighlihtHandler}>
+        <h3 className={`${classes.title} ${btnClasses}`} onMouseOver={btnHighlihtHandler}>{props.name}</h3>
         <div className={classes.description}>{props.description}</div>
         <div className={classes.price}>{price}</div>
-      </div>
+      </Link>
       <div>
           <MealItemForm id={props.id} onAddToCart={addToCartHandler} className={classes.form}/>
       </div>
